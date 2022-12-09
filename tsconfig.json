@@ -26,7 +26,8 @@
       "@styles/*": ["src/styles/*"],
       "@apis/*": ["src/apis/*"],
       "@utils/*": ["src/utils/*"]
-    }
+    },
+    "jsxImportSource": "@emotion/react"
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
