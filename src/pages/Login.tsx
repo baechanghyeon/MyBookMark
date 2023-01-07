@@ -1,4 +1,5 @@
 import React, { FormEvent, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -7,11 +8,11 @@ const Login = () => {
   });
   const { email, password } = input;
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
 
-  const onChange = (event: FormEvent<HTMLInputElement>) => {
+  const handleOnChange = (event: FormEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
     setInput({
       ...input,
@@ -22,11 +23,14 @@ const Login = () => {
   return (
     <div>
       <span>Login Page</span>
-      <form onSubmit={onSubmit}>
-        <input type='text' value={email} name='email' placeholder='Email 입력' onChange={onChange} />
-        <input type='text' value={password} name='password' placeholder='Password 입력' onChange={onChange} />
+      <form onSubmit={handleOnSubmit}>
+        <input type='text' value={email} name='email' placeholder='Email 입력' onChange={handleOnChange} />
+        <input type='text' value={password} name='password' placeholder='Password 입력' onChange={handleOnChange} />
         <input type='submit' value='로그인' />
       </form>
+      <Link to='/signUp'>
+        <span>회원가입 하셨나요?</span>
+      </Link>
     </div>
   );
 };
