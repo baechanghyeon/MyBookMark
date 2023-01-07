@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
-import Auth from '@/pages/Auth';
+import Auth from '@/pages/SignUp';
 import NotFound from '@/components/NotFound';
 
 const Router = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Auth = () => {
+const SignUp = () => {
   return <>Auth</>;
 };
 
-export default Auth;
+export default SignUp;
