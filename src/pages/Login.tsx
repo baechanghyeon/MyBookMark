@@ -1,3 +1,4 @@
+import { signIn } from '@/utils/auth';
 import React, { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -8,8 +9,13 @@ const Login = () => {
   });
   const { email, password } = input;
 
-  const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleOnSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    try {
+      await signIn(email, password);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleOnChange = (event: FormEvent<HTMLInputElement>) => {
