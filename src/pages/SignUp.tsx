@@ -4,10 +4,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface FormValue {
-  nickName: string;
   email: string;
   password: string;
-  passwordConfirm: string;
+  passwordConfirm?: string;
 }
 
 const SignUp = () => {
@@ -25,25 +24,13 @@ const SignUp = () => {
 
   const onSubmitHandler: SubmitHandler<FormValue> = async (data) => {
     try {
-      console.log(data);
-      // await signUp();
+      await signUp(data.email, data.password);
       navigate('/login');
     } catch (err) {}
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <label>NickName : </label>
-      <input
-        type='text'
-        {...register('nickName', {
-          required: true,
-          minLength: 2,
-        })}
-      />
-      {errors.nickName && errors.nickName.type === 'required' && <div>닉네임이 입력되지 않았습니다.</div>}
-      {errors.nickName && errors.nickName.type === 'minLength' && <div>2자 이상 입력해주세요.</div>}
-      <br />
       <label>email : </label>
       <input
         type='email'
@@ -63,7 +50,9 @@ const SignUp = () => {
           minLength: 6,
         })}
       />
+      {console.log(errors.password)}
       {errors.password && errors.password.type === 'required' && <div>비밀번호가 입력되지 않았습니다. </div>}
+      {errors.password && errors.password.type === 'pattern' && <div>6자 이상의 비밀번호를 입력해주세요. </div>}
       <br />
       <label>passwordConfirm : </label>
       <input

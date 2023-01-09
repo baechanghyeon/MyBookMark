@@ -1,6 +1,6 @@
 import { signIn } from '@/utils/auth';
 import React, { FormEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -10,10 +10,12 @@ const Login = () => {
 
   const { email, password } = input;
 
+  const navigate = useNavigate();
   const handleOnSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       await signIn(email, password);
+      navigate('/');
     } catch (err) {
       //TODO: 상태 값에 따른 경고창 분류
       alert('아이디와 비밀번호를 다시 한번 확인해주세요.');
