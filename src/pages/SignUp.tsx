@@ -31,42 +31,46 @@ const SignUp = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <label>email : </label>
-      <input
-        type='email'
-        {...register('email', {
-          required: true, // 필수 입력 값
-          pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        })}
-      />
-      {errors.email && errors.email.type === 'required' && <div>이메일이 입력되지 않았습니다.</div>}
-      {errors.email && errors.email.type === 'pattern' && <div>입력된 이메일이 유효하지 않습니다.</div>}
-      <br />
-      <label>password : </label>
-      <input
-        type='password'
-        {...register('password', {
-          required: true,
-          minLength: 6,
-        })}
-      />
-      {console.log(errors.password)}
-      {errors.password && errors.password.type === 'required' && <div>비밀번호가 입력되지 않았습니다. </div>}
-      {errors.password && errors.password.type === 'pattern' && <div>6자 이상의 비밀번호를 입력해주세요. </div>}
-      <br />
-      <label>passwordConfirm : </label>
-      <input
-        type='password'
-        {...register('passwordConfirm', {
-          required: true,
-          validate: (value) => value === passwordRef.current,
-        })}
-      />
-      {errors.passwordConfirm && errors.passwordConfirm.type === 'validate' && (
-        <div>입력하신 비밀번호와 일치하지 않습니다.</div>
-      )}
-      <br />
-
+      <div>
+        <label>email : </label>
+        <input
+          type='text'
+          {...register('email', {
+            required: true, // 필수 입력 값
+            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+          })}
+        />
+        {errors.email && errors.email.type === 'required' && <div>이메일이 입력되지 않았습니다.</div>}
+        {errors.email && errors.email.type === 'pattern' && <div>입력된 이메일이 유효하지 않습니다.</div>}
+        <br />
+      </div>
+      <div>
+        <label>password : </label>
+        <input
+          type='password'
+          {...register('password', {
+            required: true,
+            minLength: 6,
+          })}
+        />
+        {errors.password && errors.password.type === 'required' && <div>비밀번호가 입력되지 않았습니다. </div>}
+        {errors.password && errors.password.type === 'minLength' && <div>6자 이상의 비밀번호를 입력해주세요. </div>}
+        <br />
+      </div>
+      <div>
+        <label>passwordConfirm : </label>
+        <input
+          type='password'
+          {...register('passwordConfirm', {
+            required: true,
+            validate: (value) => value === passwordRef.current,
+          })}
+        />
+        {errors.passwordConfirm && errors.passwordConfirm.type === 'validate' && (
+          <div>입력하신 비밀번호와 일치하지 않습니다.</div>
+        )}
+        <br />
+      </div>
       <input type='submit' value='회원가입' />
     </form>
   );
