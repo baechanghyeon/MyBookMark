@@ -1,79 +1,85 @@
 import { signUp } from '@/utils/auth';
-import { REGEX } from '@/utils/validate';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
+interface FormValue {
+  nickName: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
 const SignUp = () => {
-  // 입력 상태 값
-  const [input, setInput] = useState({
-    nickName: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
-  });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormValue>();
 
-  const { nickName, email, password, passwordConfirm } = input;
-
-  const [valid, setValid] = useState({
-    isNickName: false,
-    isEmail: false,
-    isPassword: false,
-    isPasswordConfirm: false,
-  });
-
-  const { isNickName, isEmail, isPassword } = valid;
-
-  const [validErrMsg, setValidErrMsg] = useState({
-    nickNameMsg: '',
-    emailMsg: '',
-    passwordMsg: '',
-    passwordConfirmMsg: '',
-  });
-
-  const { nickNameMsg, emailMsg, passwordMsg, passwordConfirmMsg } = validErrMsg;
+  const passwordRef = useRef<string | null>(null);
+  passwordRef.current = watch('password');
 
   const navigate = useNavigate();
 
-  const handleOnSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmitHandler: SubmitHandler<FormValue> = async (data) => {
     try {
-      await signUp(email, password);
+      console.log(data);
+      // await signUp();
       navigate('/login');
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
-
-  const handleOnChange = (event: FormEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
-  };
-
-  useEffect(() => {
-    if (password === passwordConfirm) {
-      console.log('버튼 상태 변화');
-    }
-  }, [setInput]);
 
   return (
-    <div>
-      <span>SignUp Page</span>
-      <form onSubmit={handleOnSubmit}>
-        <input type='text' value={nickName} name='nickName' placeholder='닉네임 입력' onChange={handleOnChange} />
-        <input type='text' value={email} name='email' placeholder='Email 입력' onChange={handleOnChange} />
-        <input type='password' value={password} name='password' placeholder='Password 입력' onChange={handleOnChange} />
-        <input
-          type='password'
-          value={passwordConfirm}
-          name='checkPassword'
-          placeholder='Password 재입력'
-          onChange={handleOnChange}
-        />
-        <input type='submit' value='회원가입' disabled={true} />
-      </form>
-      <Link to='/login'>
-        <span>로그인 페이지 이동</span>
-      </Link>
-    </div>
+    <form onSubmit={handleSubmit(onSubmitHandler)}>
+      <label>NickName : </label>
+      <input
+        type='text'
+        {...register('nickName', {
+          required: true,
+          minLength: 2,
+        })}
+      />
+      {errors.nickName && errors.nickName.type === 'required' && <div>닉네임이 입력되지 않았습니다.</div>}
+      {errors.nickName && errors.nickName.type === 'minLength' && <div>2자 이상 입력해주세요.</div>}
+      <br />
+      <label>email : </label>
+      <input
+        type='email'
+        {...register('email', {
+          required: true, // 필수 입력 값
+          pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        })}
+      />
+      {errors.email && errors.email.type === 'required' && <div>이메일이 입력되지 않았습니다.</div>}
+      {errors.email && errors.email.type === 'pattern' && <div>입력된 이메일이 유효하지 않습니다.</div>}
+      <br />
+      <label>password : </label>
+      <input
+        type='password'
+        {...register('password', {
+          required: true,
+          minLength: 6,
+        })}
+      />
+      {errors.password && errors.password.type === 'required' && <div>비밀번호가 입력되지 않았습니다. </div>}
+      <br />
+      <label>passwordConfirm : </label>
+      <input
+        type='password'
+        {...register('passwordConfirm', {
+          required: true,
+          validate: (value) => value === passwordRef.current,
+        })}
+      />
+      {errors.passwordConfirm && errors.passwordConfirm.type === 'validate' && (
+        <div>입력하신 비밀번호와 일치하지 않습니다.</div>
+      )}
+      <br />
+
+      <input type='submit' value='회원가입' />
+    </form>
   );
 };
 

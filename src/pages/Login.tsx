@@ -1,57 +1,46 @@
-import { useForm } from 'react-hook-form';
-import React from 'react';
+import { signIn } from '@/utils/auth';
+import React, { FormEvent, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-function LoginForm({
-  onSubmit = async () => {
-    // login API 호출
-    await new Promise((r) => setTimeout(r, 1000));
-    alert('로그인 완료 !');
-  },
-}) {
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting, isDirty, errors },
-  } = useForm();
+const Login = () => {
+  const [input, setInput] = useState({
+    email: '',
+    password: '',
+  });
 
-  const { email, password } = errors;
+  const { email, password } = input;
+
+  const handleOnSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      await signIn(email, password);
+    } catch (err) {
+      //TODO: 상태 값에 따른 경고창 분류
+      alert('아이디와 비밀번호를 다시 한번 확인해주세요.');
+    }
+  };
+
+  const handleOnChange = (event: FormEvent<HTMLInputElement>) => {
+    const { name, value } = event.currentTarget;
+    setInput({
+      ...input,
+      [name]: value,
+    });
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor='email'>이메일</label>
-      <input
-        id='email'
-        type='text'
-        placeholder='test@email.com'
-        aria-invalid={!isDirty ? undefined : errors.email ? 'true' : 'false'}
-        {...register('email', {
-          required: '이메일은 필수 입력입니다.',
-          pattern: {
-            value: /\S+@\S+\.\S+/,
-            message: '이메일 형식에 맞지 않습니다.',
-          },
-        })}
-      />
-      {errors.email}
-      <label htmlFor='password'>비밀번호</label>
-      <input
-        id='password'
-        type='password'
-        placeholder='****************'
-        aria-invalid={!isDirty ? undefined : errors.password ? 'true' : 'false'}
-        {...register('password', {
-          required: '비밀번호는 필수 입력입니다.',
-          minLength: {
-            value: 8,
-            message: '8자리 이상 비밀번호를 사용하세요.',
-          },
-        })}
-      />
-      <button type='submit' disabled={isSubmitting}>
-        로그인
-      </button>
-    </form>
+    <div>
+      <span>Login Page</span>
+      <form onSubmit={handleOnSubmit}>
+        <input type='email' value={email} name='email' placeholder='Email 입력' onChange={handleOnChange} />
+        <input type='password' value={password} name='password' placeholder='Password 입력' onChange={handleOnChange} />
+        <input type='submit' value='로그인' />
+      </form>
+      <Link to='/signUp'>
+        <span>회원가입 하셨나요?</span>
+      </Link>
+    </div>
   );
-}
+};
 
-export default LoginForm;
+export default Login;
