@@ -14,11 +14,33 @@ const Login = () => {
   const handleOnSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await signIn(email, password);
+      // await signIn(email, password);
+      const res = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${import.meta.env.VITE_FB_API_KEY}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            returnSecureToken: true,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      const data = await res.json();
+      console.log('data', data);
+      if (data.error && data.error.message) {
+        alert('이메일과 비밀번호를 확인해주세요 ! ');
+      }
+      //TODO: Private Route 설정해서 이동
       navigate('/');
     } catch (err) {
       //TODO: 상태 값에 따른 경고창 분류
-      alert('아이디와 비밀번호를 다시 한번 확인해주세요.');
+      // alert('아이디와 비밀번호를 다시 한번 확인해주세요.');
+      console.warn(err);
     }
   };
 
