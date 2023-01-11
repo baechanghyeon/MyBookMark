@@ -18,7 +18,7 @@ const Login = () => {
       const data = await signIn(email, password);
       if (data) {
         const ACCESS_TOKEN = await getIdToken(data.user);
-        localStorage.setItem('accessToekn', ACCESS_TOKEN);
+        localStorage.setItem('accessToken', ACCESS_TOKEN);
         navigate('/');
       }
       //TODO: Private Route 설정해서 이동
