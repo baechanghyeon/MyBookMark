@@ -1,3 +1,4 @@
+import SocialLogin from '@/components/SocialLogin';
 import { signIn } from '@/utils/auth';
 import { getIdToken } from 'firebase/auth';
 import React, { FormEvent, useState } from 'react';
@@ -45,6 +46,7 @@ const Login = () => {
         <input type='password' value={password} name='password' placeholder='Password 입력' onChange={handleOnChange} />
         <input type='submit' value='로그인' />
       </form>
+      <SocialLogin />
       <Link to='/signUp'>
         <span>회원가입 하셨나요?</span>
       </Link>
