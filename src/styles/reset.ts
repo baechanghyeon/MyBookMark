@@ -13,12 +13,6 @@ const reset = css`
     font-family: 'Noto Sans KR', sans-serif;
     box-sizing: border-box;
   }
-
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
 `;
 
 export default reset;

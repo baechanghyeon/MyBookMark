@@ -21,4 +21,6 @@ const Router = () => {
   );
 };
 
+// TODO : path: '/' 는 Outlet이 안먹힌다.. 왜?
+
 export default Router;

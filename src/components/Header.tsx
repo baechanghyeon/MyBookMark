@@ -1,7 +1,12 @@
+import Logo from '@/assets/\bLogo';
 import React from 'react';
 
 const Header = () => {
-  return <>Header</>;
+  return (
+    <div>
+      <Logo />
+    </div>
+  );
 };
 
 export default Header;
